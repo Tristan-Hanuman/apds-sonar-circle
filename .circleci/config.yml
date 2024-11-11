@@ -1,14 +1,18 @@
 version: 2.1
-
 orbs:
   sonarcloud: sonarsource/sonarcloud@2.0.0
 
-workflows:
-  build_and_test:
-    jobs:
-      - build  # Your other job for building the project
-      - sonarcloud/scan:
-          context: sonarcloud
-          requires:
-            - build  # Ensures SonarCloud scan runs after build job completes
+jobs:
+  build:
+    docker:
+      - image: cimg/node:14.17
+    steps:
+      - checkout
+      - run: npm install
+      - run: npm test
+      - sonarcloud/scan
 
+workflows:
+  main:
+    jobs:
+      - build
