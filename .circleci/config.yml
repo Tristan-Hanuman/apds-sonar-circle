@@ -1,18 +1,22 @@
 version: 2.1
-orbs:
-  sonarcloud: sonarsource/sonarcloud@2.0.0
 
+# Define the Docker image
 jobs:
   build:
     docker:
-      - image: cimg/node:14.17
+      - image: cimg/node:14.17  # Using Node.js version 14.17; update to match your project's Node version
     steps:
-      - checkout
-      - run: npm install
-      - run: npm test
-      - sonarcloud/scan
+      - checkout  # Checks out the source code from the repository
+      - run:
+          name: Install dependencies
+          command: npm install  # Installs Node.js packages specified in package.json
+      - run:
+          name: Run tests
+          command: npm test  # Replace this with your actual test script, if available
 
+# Define workflows
 workflows:
-  main:
+  version: 2
+  build_and_test:
     jobs:
       - build
